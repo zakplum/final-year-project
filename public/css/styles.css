@@ -19,11 +19,11 @@ main {
     padding: 2em;
 }
 
-#tweetForm {
+#commentForm {
     margin-bottom: 1em;
 }
 
-#tweetInput {
+#commentInput {
     width: 100%;
     margin-bottom: 1em;
 }
