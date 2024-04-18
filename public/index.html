@@ -1,27 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comment Classifier</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment Classifier</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Comment Classifier</h1>
-    </header>
-    <main>
-        <section id="classifier">
-            <form id="commentForm">
-                <textarea id="commentInput" name="comment" rows="4" cols="50" placeholder="Enter comment here..."></textarea>
-                <button type="submit">Classify comment</button>
-            </form>
-            <div id="classificationResult"></div>
-        </section>
-    </main>
-    <footer>
-        <p>Final Year Project by Zak Plumridge</p>
-    </footer>
-    <script src="js/scripts.js"></script>
+  <header>
+    <h1>Welcome to the Comment Classifier</h1>
+  </header>
+  <main>
+    <section id="classifier">
+      <form id="commentForm" aria-label="Comment Form">
+        <label for="commentInput">Enter your comment:</label>
+        <textarea id="commentInput" name="comment" rows="4" cols="50" placeholder="Enter comment here..."></textarea>
+        <button type="submit" class="btn-submit">Classify Comment</button>
+      </form>
+      <div id="classificationResult" aria-live="polite">
+        <p>Random Forest Prediction: <span id="rfResult"></span></p>
+        <p>Logistic Regression Prediction: <span id="lrResult"></span></p>
+        <p>XGBoost Prediction: <span id="xgbResult"></span></p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>Final Year Project by Zak Plumridge</p>
+  </footer>
+  <script>
+    document.getElementById('commentForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var comment = document.getElementById('commentInput').value;
+      fetch('http://127.0.0.1:5000/classify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ comment: comment })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('rfResult').innerText = data['Random Forest'];
+        document.getElementById('lrResult').innerText = data['Logistic Regression'];
+        document.getElementById('xgbResult').innerText = data['XGBoost'];
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
 </body>
 </html>
