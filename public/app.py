@@ -53,7 +53,14 @@ def classify_comment():
     lr_result = 'Harmful' if lr_prediction == 1 else 'Non-harmful'
     xgb_result = 'Harmful' if xgb_prediction == 1 else 'Non-harmful'
 
-    return jsonify({'Random Forest': rf_result, 'Logistic Regression': lr_result, 'XGBoost': xgb_result})
+    # Prepare the predictions as a dictionary
+    predictions = {
+        'Random Forest': rf_result,
+        'Logistic Regression': lr_result,
+        'XGBoost': xgb_result
+    }
+
+    return jsonify(predictions)
 
 
 if __name__ == '__main__':
