@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import joblib
 from flask_cors import CORS
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -15,6 +15,16 @@ xgb_model, tfidf_vectorizer_words_xgb, tfidf_vectorizer_chars_xgb = joblib.load(
 
 app = Flask(__name__)
 CORS(app)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/static/<path:path>')
+def serve_static(path):
+    return app.send_static_file(path)
 
 
 @app.route('/classify', methods=['POST'])
